@@ -200,7 +200,7 @@ export class ProviderAdapter {
   }
 
   public async getTransactionCount (address: string, block: BlockSpecifier): Promise<string> {
-    const result = await this.sendRequest({
+    return await this.sendRequest({
       method: "eth_getTransactionCount",
       params: [
         address,
