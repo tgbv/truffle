@@ -115,6 +115,12 @@ const Compile = {
       return this.sourcesWithPragmaAnalysis({ paths, options });
     }
 
+    const supplier = new CompilerSupplier({
+      events: options.events,
+      solcConfig: options.compilers.solc
+    });
+    const { solc } = await supplier.load();
+
     options.logger = options.logger || console;
     options.contracts_directory = options.contracts_directory || process.cwd();
 
@@ -161,7 +167,7 @@ const Compile = {
     if (Object.keys(allSources).length > 0) {
       const solidityOptions = options.with({ compilationTargets });
       debug("Compiling Solidity");
-      const compilation = await run(allSources, solidityOptions);
+      const compilation = await run(allSources, solidityOptions, { solc });
       debug("Solidity compiled successfully");
 
       // returns CompilerResult - see @truffle/compile-common
